@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P Local Share Portal</title>
+    <style>
+        :root {
+            --bg-primary: #070b10;
+            --bg-secondary: #0f1622;
+            --surface-card: #182232;
+            --accent-primary: #10b981;
+            --accent-secondary: #06b6d4;
+            --accent-hover: #059669;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --danger-red: #ef4444;
+            --border-color: #26344b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .header-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* PIN Modal & Form */
+        .pin-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            text-align: center;
+        }
+
+        .pin-input {
+            width: 100%;
+            max-width: 240px;
+            padding: 0.75rem;
+            font-size: 1.5rem;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--accent-primary);
+            outline: none;
+        }
+
+        .pin-input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #000;
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Dropzone */
+        .dropzone {
+            border: 2px dashed var(--accent-primary);
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 10px;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .dropzone.dragover {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--accent-secondary);
+        }
+
+        .dropzone-icon {
+            font-size: 2.5rem;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* File List */
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            overflow: hidden;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+            color: var(--accent-secondary);
+        }
+
+        .file-name {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        .file-size {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-download {
+            background: var(--accent-primary);
+            color: #070b10;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        /* Progress Bar */
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.75rem;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .alert-danger {
+            color: var(--danger-red);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-logo">
+                ⚡ P2P Local Share
+            </div>
+            <div class="header-subtitle">High-Speed Local Wi-Fi File Transfer</div>
+        </div>
+
+        <!-- PIN Protection Section -->
+        <div id="pinCard" class="card" style="display: none;">
+            <div class="card-title">Authentication Required</div>
+            <div class="pin-container">
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                    Enter the 4-digit PIN displayed on the P2P Server workstation screen:
+                </p>
+                <input type="password" id="pinInput" class="pin-input" maxlength="8" placeholder="••••">
+                <div id="pinError" class="alert-danger" style="display: none;"></div>
+                <button class="btn" onclick="submitPin()">Unlock Share Portal</button>
+            </div>
+        </div>
+
+        <!-- Main Share Portal -->
+        <div id="portalContent" style="display: none;">
+            <!-- Upload Dropzone Card -->
+            <div class="card">
+                <div class="card-title">
+                    <span>Upload File to Server</span>
+                    <span style="font-size: 0.8rem; color: var(--accent-primary);">⚡ Direct P2P</span>
+                </div>
+                <div id="dropzone" class="dropzone" onclick="document.getElementById('fileInput').click()">
+                    <div class="dropzone-icon">📤</div>
+                    <div style="font-weight: 600; margin-bottom: 0.25rem;">Tap to select or drop files here</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Photos, Videos, Documents & Archives</div>
+                    <input type="file" id="fileInput" class="file-input" onchange="uploadFiles(this.files)">
+                </div>
+
+                <div id="uploadStatus" style="display: none; margin-top: 1rem;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                        <span id="uploadFileName">Uploading...</span>
+                        <span id="uploadPercent">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="uploadProgressFill" class="progress-bar-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Shared Files Card -->
+            <div class="card">
+                <div class="card-title">
+                    <span>Available Shared Files</span>
+                    <button onclick="loadFiles()" style="background: none; border: none; color: var(--accent-secondary); cursor: pointer;">↻ Refresh</button>
+                </div>
+                <div id="fileList" class="file-list">
+                    <div style="text-align: center; color: var(--text-secondary); padding: 1rem;">Loading files...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let sessionPin = localStorage.getItem('p2p_pin') || '';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+        });
+
+        async function checkAuth() {
+            try {
+                const res = await fetch('/api/files', {
+                    headers: { 'X-P2P-PIN': sessionPin }
+                });
+
+                if (res.status === 401) {
+                    document.getElementById('pinCard').style.display = 'block';
+                    document.getElementById('portalContent').style.display = 'none';
+                } else if (res.ok) {
+                    document.getElementById('pinCard').style.display = 'none';
+                    document.getElementById('portalContent').style.display = 'block';
+                    renderFileList(await res.json());
+                }
+            } catch (err) {
+                console.error('Auth check error:', err);
+            }
+        }
+
+        async function submitPin() {
+            const input = document.getElementById('pinInput').value;
+            const errDiv = document.getElementById('pinError');
+            errDiv.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin: input })
+                });
+
+                if (res.ok) {
+                    sessionPin = input;
+                    localStorage.setItem('p2p_pin', input);
+                    checkAuth();
+                } else {
+                    errDiv.innerText = 'Invalid PIN code. Access denied.';
+                    errDiv.style.display = 'block';
+                }
+            } catch (err) {
+                errDiv.innerText = 'Server connection failed.';
+                errDiv.style.display = 'block';
+            }
+        }
+
+        async function loadFiles() {
+            try {
+                const res = await fetch('/api/files', {
+                    headers: { 'X-P2P-PIN': sessionPin }
+                });
+                if (res.ok) {
+                    renderFileList(await res.json());
+                }
+            } catch (err) {
+                console.error('Error loading files:', err);
+            }
+        }
+
+        function renderFileList(files) {
+            const listDiv = document.getElementById('fileList');
+            if (!files || files.length === 0) {
+                listDiv.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 1rem;">No files shared yet on host server.</div>';
+                return;
+            }
+
+            listDiv.innerHTML = files.map(file => `
+                <div class="file-item">
+                    <div class="file-info">
+                        <div class="file-icon">📄</div>
+                        <div>
+                            <div class="file-name" title="${file.fileName}">${file.fileName}</div>
+                            <div class="file-size">${file.formattedSize} • ${file.downloadCount} downloads</div>
+                        </div>
+                    </div>
+                    <a href="/api/files/download/${file.id}?pin=${encodeURIComponent(sessionPin)}" class="btn-download" target="_blank">Download</a>
+                </div>
+            `).join('');
+        }
+
+        // Dropzone Drag and Drop
+        const dropzone = document.getElementById('dropzone');
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                uploadFiles(e.dataTransfer.files);
+            }
+        });
+
+        function uploadFiles(files) {
+            if (!files || files.length === 0) return;
+
+            const file = files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const statusDiv = document.getElementById('uploadStatus');
+            const nameSpan = document.getElementById('uploadFileName');
+            const percentSpan = document.getElementById('uploadPercent');
+            const fillDiv = document.getElementById('uploadProgressFill');
+
+            statusDiv.style.display = 'block';
+            nameSpan.innerText = file.name;
+            percentSpan.innerText = '0%';
+            fillDiv.style.width = '0%';
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/upload', true);
+            xhr.setRequestHeader('X-P2P-PIN', sessionPin);
+
+            xhr.upload.onprogress = (e) => {
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    percentSpan.innerText = percent + '%';
+                    fillDiv.style.width = percent + '%';
+                }
+            };
+
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    percentSpan.innerText = '✓ Done!';
+                    setTimeout(() => {
+                        statusDiv.style.display = 'none';
+                        loadFiles();
+                    }, 1500);
+                } else {
+                    percentSpan.innerText = '❌ Error';
+                }
+            };
+
+            xhr.onerror = () => {
+                percentSpan.innerText = '❌ Upload failed';
+            };
+
+            xhr.send(formData);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{
+  "project_id": 21,
+  "title": "P2P Local File Share Server Pro (.NET 8 / WPF / WinUI 3)",
+  "folder_name": "021-P2P-Local-File-Share-Server",
+  "category": "Networking, SSH & Cloud Tools",
+  "target_os": "Windows 10 / Windows 11 (x64 Native Executable / Single-File Self-Contained .exe)",
+  "version": "2.0.0-PROD",
+  "overview": "A zero-configuration, high-throughput local area network (LAN) file-sharing server and P2P distribution workstation engineered with .NET 8.0, WPF / WinUI 3, Wpf.Ui / Fluent Design, and an embedded ASP.NET Core Kestrel HTTP/2 web engine. Empowers users to share multi-gigabyte files instantly with mobile phones, tablets, and remote PCs on the same Wi-Fi/LAN via dynamic QR code scanning, PIN-code authentication, upload portal dropzones, and real-time chunked byte streaming.",
+  "key_features": [
+    "High-Performance Embedded Kestrel HTTP/2 Server: In-process ASP.NET Core Kestrel Web API server hosting chunked static file streaming and multipart file upload endpoints with zero external dependencies",
+    "Dynamic Local IP & Vector QR Code Engine: Automatic network interface detection (Ethernet, Wi-Fi, Virtual Adapters) paired with QRCoder vector QR code generation pointing directly to LAN endpoints",
+    "PIN-Code Access Protection & Rate Limiting: Configurable 4-to-8 digit PIN authentication, Session Token cookies, rate limiting, and temporary IP bans to prevent unauthorized LAN downloads",
+    "Interactive LAN Upload Portal & Drag-and-Drop Dropzone: Mobile-friendly HTML5/Tailwind web interface served directly by Kestrel, allowing connected mobile clients to upload files back to the desktop app",
+    "Real-Time Transfer Speedometers & Active Session Monitor: WPF/WinUI 3 reactive dashboard displaying active client IP addresses, real-time MB/s throughput speedometers, transferred byte counters, and connection logs"
+  ],
+  "core_stack": {
+    "dotnet_version": ".NET 8.0 LTS / C# 12",
+    "gui_framework": "WPF / WinUI 3 with Wpf.Ui (Fluent Dark Theme / Windows 11 Mica Glass Effects)",
+    "mvvm_framework": "CommunityToolkit.Mvvm (ObservableObject, RelayCommand, AsyncRelayCommand)",
+    "web_server_engine": "Microsoft.AspNetCore.App (Embedded Kestrel Web API / Minimal API Core)",
+    "qr_engine": "QRCoder 1.4.3+ (Native Bitmap & SVG QR Vector Generator)",
+    "networking": "System.Net.NetworkInformation, System.Net.Sockets, System.Threading.Channels",
+    "packaging": "MSBuild / dotnet publish (PublishSingleFile=true, SelfContained=true, IncludeNativeLibrariesForSelfExtract=true producing standalone ~45MB .exe)"
+  },
+  "design_system_and_theme": {
+    "theme_name": "Hyper Emerald & Deep Slate (Windows 11 Mica / Fluent Grid)",
+    "color_palette": {
+      "background_primary": "#070B10",
+      "background_secondary": "#0F1622",
+      "surface_card": "#182232",
+      "accent_primary": "#10B981",
+      "accent_secondary": "#06B6D4",
+      "accent_hover": "#059669",
+      "text_primary": "#F8FAFC",
+      "text_secondary": "#94A3B8",
+      "danger_red": "#EF4444",
+      "warning_amber": "#F59E0B",
+      "success_emerald": "#10B981",
+      "border_color": "#26344B"
+    },
+    "typography": {
+      "font_family": "Segoe UI Variable Display, Cascadia Code, Inter, sans-serif",
+      "heading_size": "18pt",
+      "subheading_size": "14pt",
+      "body_size": "11pt",
+      "caption_size": "9pt"
+    }
+  },
+  "system_architecture": {
+    "pattern": "Model-View-ViewModel (MVVM) with Embedded Kestrel Async Service Host",
+    "ui_layer": "WPF / WinUI 3 XAML markup with Wpf.Ui Fluent dark controls, responsive card grid, embedded SVG QR code canvas, active client session list, and live MB/s throughput gauges",
+    "background_server_host": "Microsoft.AspNetCore.Builder.WebApplication running on background Task hosting Minimal APIs (/api/files, /api/upload, /api/stream/{id}, /ws/telemetry) with zero UI thread locking",
+    "ipc_and_event_bus": "System.Threading.Channels (Channel<ServerEvent>) streaming atomic client download/upload progress, byte counters, and connection events to ViewModel via IProgress<T>",
+    "process_safety": "Memory-safe managed C# 12 buffer pipelines, zero raw pointer risks, strict Kestrel request body size limits, and graceful shutdown handles on application exit"
+  },
+  "packaging_spec": {
+    "project_file": "P2PLocalFileShareServer.csproj",
+    "output_binary_name": "P2PLocalFileShareServer.exe",
+    "publish_profile": "win-x64",
+    "build_command": "dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true"
+  },
+  "ai_agent_prompt": "You are an elite Senior Windows Desktop & Systems Software Engineer tasked with implementing a production-grade native C# / .NET 8 desktop application titled 'P2P Local File Share Server Pro'.\n\n### PROJECT OBJECTIVE:\nConstruct a zero-configuration local area network file sharing workstation and web server using .NET 8.0, WPF / WinUI 3 (Wpf.Ui Fluent Design), and an embedded ASP.NET Core Kestrel HTTP/2 engine. Enables instant multi-device file transfers via dynamic QR code scanning, PIN security, upload portal dropzones, and real-time MB/s throughput monitoring without freezing the desktop UI.\n\n### MANDATORY TECHNICAL REQUIREMENTS:\n1. .NET 8.0 ARCHITECTURE & MVVM PATTERN:\n   - Built with C# 12 and .NET 8.0 LTS using CommunityToolkit.Mvvm ([ObservableProperty], [RelayCommand]).\n   - Styled using Wpf.Ui or WinUI 3 applying Fluent Dark theme tokens (#070B10 dark background, #10B981 emerald primary accent, #06B6D4 cyan accent) with Windows 11 Mica glass visual effects.\n\n2. EMBEDDED KESTREL WEB ENGINE & NETWORK DISCOVERY:\n   - Host an in-process ASP.NET Core WebApplication (Kestrel) on configurable ports (e.g., 8080, 5000).\n   - Automatically enumerate active IPv4 addresses across network adapters (Ethernet, Wi-Fi) using NetworkInterface and UnicastIPAddressInformation.\n   - Generate vector QR codes using QRCoder pointing directly to the active LAN URL (e.g., http://192.168.1.50:8080).\n\n3. PIN PROTECTION & UPLOAD PORTAL:\n   - Implement PIN-code authentication middleware requiring connected mobile browsers to enter a matching 4-digit PIN before downloading shared files.\n   - Serve an embedded mobile-responsive HTML5/CSS upload web portal allowing connected devices to upload files back to the desktop application's destination folder.\n\n4. REAL-TIME TELEMETRY & EVENT STREAMING:\n   - Pass atomic byte transfer events, client IP connections, throughput speed calculations (MB/s), and active session logs to the UI using System.Threading.Channels and IProgress<T> without locking the main UI thread.\n\n5. SINGLE-FILE PACKAGING:\n   - Deliver complete C# source files (MainWindow.xaml, MainWindow.xaml.cs, MainViewModel.cs, KestrelServerService.cs) and a ready-to-publish .csproj configured for PublishSingleFile=true self-contained .exe output."
+}
