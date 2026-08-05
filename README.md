@@ -1,6 +1,5 @@
-# P2P Local File Share Server (ID: `021`)
+# P2P Local File Share Server
 
-[![Project ID](https://img.shields.io/badge/Project%20ID-021-blue.svg)](https://github.com/hsinidev/021-P2P-Local-File-Share-Server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Developer](https://img.shields.io/badge/Developer-Hsini%20Mohamed-green.svg)](https://hsini.dev)
 
