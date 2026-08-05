@@ -4,7 +4,7 @@
 [![Developer](https://img.shields.io/badge/Developer-Hsini%20Mohamed-green.svg)](https://hsini.dev)
 
 > **Project ID**: `021`  
-> **Repository**: [https://github.com/hsinidev/021-P2P-Local-File-Share-Server](https://github.com/hsinidev/021-P2P-Local-File-Share-Server)
+> **Repository**: [https://github.com/hsinidev/P2P-Local-File-Share-Server](https://github.com/hsinidev/P2P-Local-File-Share-Server)
 
 ---
 
@@ -38,10 +38,10 @@ P2P Local File Share Server creates instant zero-configuration HTTP file sharing
 ### Setup Instructions
 ```bash
 # 1. Clone the repository
-git clone https://github.com/hsinidev/021-P2P-Local-File-Share-Server.git
+git clone https://github.com/hsinidev/P2P-Local-File-Share-Server.git
 
 # 2. Navigate to project directory
-cd 021-P2P-Local-File-Share-Server
+cd P2P-Local-File-Share-Server
 
 # 3. Install required dependencies
 pip install -r requirements.txt
@@ -59,7 +59,7 @@ python app.py
 - **Website**: [https://hsini.dev](https://hsini.dev)
 - **Email**: [contact@hsini.dev](mailto:contact@hsini.dev)
 - **GitHub Profile**: [https://github.com/hsinidev](https://github.com/hsinidev)
-- **Project Repo**: [https://github.com/hsinidev/021-P2P-Local-File-Share-Server](https://github.com/hsinidev/021-P2P-Local-File-Share-Server)
+- **Project Repo**: [https://github.com/hsinidev/P2P-Local-File-Share-Server](https://github.com/hsinidev/P2P-Local-File-Share-Server)
 
 ---
 
